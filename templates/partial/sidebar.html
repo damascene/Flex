@@ -1,8 +1,8 @@
 <aside>
   <div>
     <a href="{{ SITEURL }}/">
-      {% if SITELOGO %}
-      <img src="{{ SITELOGO }}" alt="{{ SITETITLE }}" title="{{ SITETITLE }}">
+      {% if USERLOGO %}
+      <img id="profile_image" src="{{ SITELOGO }}" alt="{{ SITETITLE }}" title="{{ SITETITLE }}">
       {% else %}
       <img src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/img/profile.png" alt="{{ SITETITLE }}" title="{{ SITETITLE }}">
       {% endif %}
@@ -85,6 +85,28 @@
     {% endif %}
   </div>
 
+    {% if USERLOGO %}
+    <script type="module">
+        // Import toml parser
+        import * as toml from 'https://esm.run/toml';
+        // Get url from link with toml_file ID
+        let url = document.getElementById("toml_file").href;
+        console.log(url)
+        
+        // Fetch data from toml file
+        async function fetchData() {
+            let response = await fetch(url);
+            let text = await response.text()
+            let parsedData = toml.parse(text);
+            // Set src for link with profile_image id
+            document.getElementById('profile_image').src = parsedData.data.profile_image;
+        }
+
+        console.log(url);
+        fetchData();
+    </script>
+   {% endif %}
+    
   {% if GOOGLE_ADSENSE and GOOGLE_ADSENSE.ads.aside %}
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <ins class="adsbygoogle ads-aside"
